@@ -337,12 +337,13 @@ void affine_wavefronts_compute_wavefront(
 /*
  * Computation using Wavefronts
  */
-void affine_wavefronts_align(
+bool affine_wavefronts_align(
     affine_wavefronts_t* const affine_wavefronts,
     const char* const pattern,
     const int pattern_length,
     const char* const text,
-    const int text_length) {
+    const int text_length,
+    const int max_score) {
   // Init padded strings
   strings_padded_t* const strings_padded =
       strings_padded_new_rhomb(
@@ -353,6 +354,7 @@ void affine_wavefronts_align(
   // Compute wavefronts for increasing score
   int score = 0;
   while (true) {
+//    printf("Score: %d\n", score);
     // Exact extend s-wavefront
     affine_wavefronts_extend_wavefront_packed(
         affine_wavefronts,strings_padded->pattern_padded,pattern_length,
@@ -367,6 +369,9 @@ void affine_wavefronts_align(
     }
     // Update all wavefronts
     ++score; // Increase score
+    if (score > max_score){
+        return false;
+    }
     affine_wavefronts_compute_wavefront(
         affine_wavefronts,strings_padded->pattern_padded,pattern_length,
         strings_padded->text_padded,text_length,score);
@@ -379,5 +384,6 @@ void affine_wavefronts_align(
   WAVEFRONT_STATS_COUNTER_ADD(affine_wavefronts,wf_score,score); // STATS
   // Free
   strings_padded_delete(strings_padded);
+  return true;
 }
 

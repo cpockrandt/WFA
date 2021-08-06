@@ -28,9 +28,9 @@
  * AUTHOR(S): Santiago Marco-Sola <santiagomsola@gmail.com>
  * DESCRIPTION: WFA Sample-Code
  */
-
+extern "C" {
 #include "gap_affine/affine_wavefront_align.h"
-
+};
 int main(int argc,char* argv[]) {
   // Patter & Text
   char* pattern = "TCTTTACTCGCGCGTTGGAGAAATACAATAGT";

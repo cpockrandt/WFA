@@ -370,6 +370,7 @@ bool affine_wavefronts_align(
     // Update all wavefronts
     ++score; // Increase score
     if (score > max_score){
+      strings_padded_delete(strings_padded);
         return false;
     }
     affine_wavefronts_compute_wavefront(
